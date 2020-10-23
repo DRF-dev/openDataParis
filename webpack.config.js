@@ -49,4 +49,5 @@ module.exports = {
     htmlWebpackPlugin,
     miniCssExtractPlugin,
   ],
+  entry: ['babel-polyfill', './src'],
 };
