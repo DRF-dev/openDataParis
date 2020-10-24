@@ -5,35 +5,61 @@ export default class Navigation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'Loading...',
-      data: undefined,
-      keys: [],
+      q: '',
+      status: null,
+      message: 'Search a service',
+      data: {
+        nhits: 0,
+        datasets: [
+          {
+            datasetid: '',
+            metas: {
+              publisher: '',
+            },
+          },
+        ],
+      },
     };
   }
 
-  componentDidMount() {
-    this.getDatas();
-  }
-
-  async getDatas() {
+  async getDatas(e) {
+    const { q } = this.state;
+    e.preventDefault();
     try {
-      const { data } = await Axios.get('https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&q=&facet=category&facet=tags&facet=address_name&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type');
-      const keys = Object.keys(data);
-      this.setState({ status: 'success', data, keys });
+      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}`);
+      this.setState({ status: 'success', message: 'Results :', data });
     } catch (err) {
-      this.setState({ data: 'no-data' });
+      this.setState({ message: 'Error' });
     }
   }
 
   render() {
-    const { status, data, keys } = this.state;
+    const {
+      status,
+      message,
+      data,
+      q,
+    } = this.state;
     return (
       <div>
-        <h1>{status}</h1>
+        <form onSubmit={(e) => this.getDatas(e)}>
+          <input type="text" placeholder="Enter here the thematique of your search" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
+          <button type="submit">Submit</button>
+        </form>
+        <h1>{message}</h1>
         <ul>
-          {keys.map(() => (
-            <li>{data[keys[0]]}</li>
-          ))}
+          {status
+            ? <li>{`${data.nhits} publisher(s) :`}</li>
+            : null}
+          {status
+            ? (
+              <ul>
+                {data.datasets.map((informations) => (
+                  <li>{informations.metas.publisher}</li>
+                ))}
+              </ul>
+            )
+            : null}
         </ul>
       </div>
     );
