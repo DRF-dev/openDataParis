@@ -1,7 +1,7 @@
 import Axios from 'axios';
 import React, { Component } from 'react';
 
-export default class Navigation extends Component {
+export default class Body extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +15,12 @@ export default class Navigation extends Component {
             datasetid: '',
             metas: {
               publisher: '',
+              license: '',
+              records_count: '',
+              keyword: [],
+              description: '',
             },
+            title: '',
           },
         ],
       },
@@ -23,13 +28,13 @@ export default class Navigation extends Component {
   }
 
   async getDatas(e) {
-    const { q } = this.state;
     e.preventDefault();
+    const { q } = this.state;
     try {
       const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}`);
       this.setState({ status: 'success', message: 'Results :', data });
     } catch (err) {
-      this.setState({ message: 'Error' });
+      this.setState({ message: 'Error, try again' });
     }
   }
 
@@ -47,20 +52,27 @@ export default class Navigation extends Component {
           <button type="submit">Submit</button>
         </form>
         <h1>{message}</h1>
-        <ul>
-          {status
-            ? <li>{`${data.nhits} publisher(s) :`}</li>
-            : null}
-          {status
-            ? (
-              <ul>
-                {data.datasets.map((informations) => (
-                  <li>{informations.metas.publisher}</li>
-                ))}
-              </ul>
-            )
-            : null}
-        </ul>
+        {status
+          ? (
+            <ul>
+              <li>{`${data.nhits} publisher(s) :`}</li>
+              {data.datasets.map((informations) => (
+                <ul>
+                  <li>{informations.datasetid}</li>
+                  <ul>
+                    <p dangerouslySetInnerHTML={{ __html: informations.metas.description }} />
+                    <li>{informations.metas.publisher}</li>
+                    <li>{informations.metas.license}</li>
+                    <ul>
+                      {informations.metas.keyword.map((keyword) => <li>{keyword}</li>)}
+                    </ul>
+                    <li>{informations.metas.records_count}</li>
+                  </ul>
+                </ul>
+              ))}
+            </ul>
+          )
+          : null}
       </div>
     );
   }
