@@ -1,0 +1,24 @@
+$appBackground: #303030;
+
+#container {
+  min-height: 100vh;
+  background-color: $appBackground;
+  color: white;
+
+  .formulaire {
+    height: 100vh;
+    background-color: aliceblue;
+
+    .openDataForm {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+    }
+  }
+
+  .body {
+    height: 100vh;
+    overflow-y: scroll;
+  }
+}

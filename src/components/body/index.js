@@ -46,7 +46,7 @@ export default class Body extends Component {
       q,
     } = this.state;
     return (
-      <div>
+      <div className="body">
         <form onSubmit={(e) => this.getDatas(e)}>
           <input type="text" placeholder="Enter here the thematique of your search" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
           <button type="submit">Submit</button>
@@ -58,15 +58,19 @@ export default class Body extends Component {
               <li>{`${data.nhits} publisher(s) :`}</li>
               {data.datasets.map((informations) => (
                 <ul>
-                  <li>{informations.datasetid}</li>
+                  <li>{`Responsable: ${informations.datasetid}`}</li>
                   <ul>
-                    <p dangerouslySetInnerHTML={{ __html: informations.metas.description }} />
-                    <li>{informations.metas.publisher}</li>
-                    <li>{informations.metas.license}</li>
+                    {/* <li>
+                      <span>Description :</span>
+                      <div dangerouslySetInnerHTML={{ __html: informations.metas.description }} />
+                    </li> */}
+                    <li>{`Publisher: ${informations.metas.publisher}`}</li>
+                    <li>{`Licences ${informations.metas.license}`}</li>
+                    <li>Mots clé(s)</li>
                     <ul>
                       {informations.metas.keyword.map((keyword) => <li>{keyword}</li>)}
                     </ul>
-                    <li>{informations.metas.records_count}</li>
+                    <li>{`Record count :${informations.metas.records_count}`}</li>
                   </ul>
                 </ul>
               ))}
