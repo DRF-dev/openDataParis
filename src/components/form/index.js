@@ -1,36 +1,75 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import Axios from 'axios';
 
-/* export default class Formulaire extends Component {
+class Formulaire extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      q: '',
+      status: null,
+      message: null,
+      data: null,
+    };
+  }
+
+  async getDatas() {
+    const { q } = this.state;
+    try {
+      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}`);
+      this.setState({ status: 'success', message: 'Results :', data: data.nhits });
+    } catch (err) {
+      this.setState({ message: 'Error, try again' });
+    }
+  }
+
+  async searchQuery(e) {
+    e.preventDefault();
+    await this.getDatas();
+    // eslint-disable-next-line react/prop-types
+    const { dispatch } = this.props;
+    const {
+      status,
+      message,
+      data,
+      q,
+    } = this.state;
+    const action = {
+      type: 'data',
+      data: {
+        status,
+        message: q === '' ? 'Search a service' : message,
+        data,
+      },
+    };
+    this.setState({ q: '' });
+    dispatch(action);
+  }
+
   render() {
+    const { q } = this.state;
     return (
-      <Row>
-        <Col>
-          <Form>
-            <h1>Hello world</h1>
-          </Form>
-        </Col>
-      </Row>
+      <Form className="openDataForm" onSubmit={(e) => this.searchQuery(e)}>
+        <Form.Control placeholder="query" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
+        <Form.Control placeholder="lang" />
+        <Form.Control placeholder="rows" />
+        <Form.Control placeholder="start" />
+        <Form.Control placeholder="sort" />
+        <Form.Control placeholder="facet" />
+        <Form.Control placeholder="refine" />
+        <Form.Control placeholder="exclude" />
+        <Form.Control placeholder="geofilter-distance" />
+        <Form.Control placeholder="geofilter-polygon" />
+        <Form.Control placeholder="timezone" />
+        <Button type="submit">Submit</Button>
+      </Form>
     );
   }
-  https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-
-} */
+}
 
-const Formulaire = () => (
-  <Form className="openDataForm">
-    <Form.Control placeholder="query" />
-    <Form.Control placeholder="lang" />
-    <Form.Control placeholder="rows" />
-    <Form.Control placeholder="start" />
-    <Form.Control placeholder="sort" />
-    <Form.Control placeholder="facet" />
-    <Form.Control placeholder="refine" />
-    <Form.Control placeholder="exclude" />
-    <Form.Control placeholder="geofilter-distance" />
-    <Form.Control placeholder="geofilter-polygon" />
-    <Form.Control placeholder="timezone" />
-    <Button type="submit">Submit</Button>
-  </Form>
-);
+const mapStateToProps = (state) => ({
+  data: state.data,
+});
 
-export default Formulaire;
+export default connect(mapStateToProps)(Formulaire);

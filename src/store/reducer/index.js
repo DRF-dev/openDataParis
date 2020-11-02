@@ -1,0 +1,22 @@
+const initState = {
+  status: null,
+  message: 'Search a service',
+  data: '',
+};
+
+const reducer = (state = initState, action) => {
+  let nextState;
+  switch (action.type) {
+    case 'data':
+      nextState = {
+        status: action.data.status,
+        message: action.data.message,
+        data: action.data.data,
+      };
+      return nextState;
+    default:
+      return state;
+  }
+};
+
+export default reducer;
