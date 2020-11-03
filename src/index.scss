@@ -19,6 +19,19 @@ $appBackground: #303030;
 
   .body {
     height: 100vh;
+    padding: 2%;
     overflow-y: scroll;
+    overflow-x: hidden;
+
+    .cards {
+      min-height: 95%;
+      border-radius: 1rem;
+      background-color: #454545;
+      margin-bottom: 6%;
+
+      span {
+        font-weight: bold;
+      }
+    }
   }
 }

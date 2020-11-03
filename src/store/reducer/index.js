@@ -1,7 +1,7 @@
 const initState = {
   status: null,
   message: 'Search a service',
-  data: '',
+  data: {},
 };
 
 const reducer = (state = initState, action) => {
@@ -9,7 +9,6 @@ const reducer = (state = initState, action) => {
   switch (action.type) {
     case 'data':
       nextState = {
-        status: action.data.status,
         message: action.data.message,
         data: action.data.data,
       };

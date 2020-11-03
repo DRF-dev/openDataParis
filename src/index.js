@@ -16,10 +16,10 @@ const App = () => (
   <Provider store={Store}>
     <Container fluid id="container">
       <Row>
-        <Col xs={3} sm={3} className="formulaire">
+        <Col sm={3} className="formulaire">
           <Formulaire />
         </Col>
-        <Col xs={9} sm={9}>
+        <Col sm={9}>
           <Body />
         </Col>
       </Row>

@@ -18,7 +18,7 @@ class Formulaire extends React.Component {
     const { q } = this.state;
     try {
       const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}`);
-      this.setState({ status: 'success', message: 'Results :', data: data.nhits });
+      this.setState({ status: 'success', message: `${data.nhits} Result(s)`, data });
     } catch (err) {
       this.setState({ message: 'Error, try again' });
     }
@@ -68,8 +68,4 @@ class Formulaire extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  data: state.data,
-});
-
-export default connect(mapStateToProps)(Formulaire);
+export default connect(null)(Formulaire);
