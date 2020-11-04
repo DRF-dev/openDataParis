@@ -1,8 +1,13 @@
-// Dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Provider } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
 import 'babel-polyfill';
 import './index.scss';
@@ -12,18 +17,27 @@ import Store from './store';
 import Body from './components/body';
 import Formulaire from './components/form';
 
+const Application = () => (
+  <Container fluid id="container">
+    <Row>
+      <Col sm={3} className="formulaire">
+        <Formulaire />
+      </Col>
+      <Col sm={9}>
+        <Body />
+      </Col>
+    </Row>
+  </Container>
+);
+
 const App = () => (
   <Provider store={Store}>
-    <Container fluid id="container">
-      <Row>
-        <Col sm={3} className="formulaire">
-          <Formulaire />
-        </Col>
-        <Col sm={9}>
-          <Body />
-        </Col>
-      </Row>
-    </Container>
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Application} />
+        <Redirect to="/" />
+      </Switch>
+    </Router>
   </Provider>
 );
 

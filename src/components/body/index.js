@@ -21,7 +21,7 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    console.log(data);
+    console.log(data.datasets);
     return (
       <div className="body">
         <h1>{message}</h1>
@@ -53,7 +53,7 @@ class Body extends Component {
                       <span>Données: </span>
                       {dataset.metas.records_count}
                     </Card.Text>
-                    <Button variant="outline-light">Futur redirection</Button>
+                    <Button variant="outline-light">Description</Button>
                   </Card.Body>
                 </Card>
               </Col>

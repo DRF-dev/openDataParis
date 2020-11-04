@@ -8,7 +8,7 @@ class Formulaire extends React.Component {
     super(props);
     this.state = {
       q: '',
-      rows: {},
+      rows: NaN,
       nav: '',
       status: null,
       message: null,
@@ -45,7 +45,7 @@ class Formulaire extends React.Component {
         data,
       },
     };
-    this.setState({ q: '', rows: {} });
+    this.setState({ q: '', rows: NaN });
     dispatch(action);
   }
 
