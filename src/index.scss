@@ -1,5 +1,11 @@
 $appBackground: #303030;
 
+@mixin inColumn() {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #container {
   min-height: 100vh;
   background-color: $appBackground;
@@ -10,10 +16,27 @@ $appBackground: #303030;
     background-color: aliceblue;
 
     .openDataForm {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
+      @include inColumn();
       justify-content: space-around;
+    }
+
+    .openDataForm-choice {
+      @include inColumn();
+      justify-content: center;
+      align-items: center;
+
+      input {
+        margin: 5% 0;
+      }
+
+      button {
+        width: 100%;
+        margin: 5% 0;
+      }
+
+      span {
+        color: $appBackground;
+      }
     }
   }
 

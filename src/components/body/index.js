@@ -27,7 +27,7 @@ class Body extends Component {
         <h1>{message}</h1>
         <Row>
           {!(data.datasets)
-            ? <div>No-result</div>
+            ? null
             : data.datasets.map((dataset) => (
               <Col xs={4}>
                 <Card className="cards">

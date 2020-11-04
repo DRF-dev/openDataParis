@@ -8,6 +8,8 @@ class Formulaire extends React.Component {
     super(props);
     this.state = {
       q: '',
+      rows: {},
+      nav: '',
       status: null,
       message: null,
       data: null,
@@ -15,12 +17,13 @@ class Formulaire extends React.Component {
   }
 
   async getDatas() {
-    const { q } = this.state;
+    const { q, rows } = this.state;
     try {
-      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}`);
-      this.setState({ status: 'success', message: `${data.nhits} Result(s)`, data });
+      if (q === '') throw new Error('Empty query');
+      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}&rows=${rows || 10}`);
+      this.setState({ message: `${data.nhits} Result(s)`, data });
     } catch (err) {
-      this.setState({ message: 'Error, try again' });
+      this.setState({ message: err.message, data: [] });
     }
   }
 
@@ -33,37 +36,55 @@ class Formulaire extends React.Component {
       status,
       message,
       data,
-      q,
     } = this.state;
     const action = {
       type: 'data',
       data: {
         status,
-        message: q === '' ? 'Search a service' : message,
+        message,
         data,
       },
     };
-    this.setState({ q: '' });
+    this.setState({ q: '', rows: {} });
     dispatch(action);
   }
 
   render() {
-    const { q } = this.state;
+    const { q, nav, rows } = this.state;
+    if (nav === 'query') {
+      return (
+        <Form className="openDataForm-choice" onSubmit={(e) => this.searchQuery(e)}>
+          <Form.Control placeholder="query" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
+          <Form.Control placeholder="Max cards (default: 10)" onChange={(e) => this.setState({ rows: e.target.value })} value={rows} type="number" />
+          <Button variant="outline-dark" type="submit" className="submit">Submit</Button>
+          <Button variant="outline-dark" onClick={() => this.setState({ nav: '' })}>Back</Button>
+        </Form>
+      );
+    }
+    if (nav === 'multi') {
+      return (
+        <Form className="openDataForm-choice" onSubmit={(e) => this.searchQuery(e)}>
+          <Form.Control placeholder="lang" />
+          <Form.Control placeholder="rows" />
+          <Form.Control placeholder="start" />
+          <Form.Control placeholder="sort" />
+          <Form.Control placeholder="facet" />
+          <Form.Control placeholder="refine" />
+          <Form.Control placeholder="exclude" />
+          <Form.Control placeholder="geofilter-distance" />
+          <Form.Control placeholder="geofilter-polygon" />
+          <Form.Control placeholder="timezone" />
+          <Button variant="outline-dark" type="submit" className="submit">Submit</Button>
+          <Button variant="outline-dark" onClick={() => this.setState({ nav: '' })}>Back</Button>
+        </Form>
+      );
+    }
     return (
-      <Form className="openDataForm" onSubmit={(e) => this.searchQuery(e)}>
-        <Form.Control placeholder="query" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
-        <Form.Control placeholder="lang" />
-        <Form.Control placeholder="rows" />
-        <Form.Control placeholder="start" />
-        <Form.Control placeholder="sort" />
-        <Form.Control placeholder="facet" />
-        <Form.Control placeholder="refine" />
-        <Form.Control placeholder="exclude" />
-        <Form.Control placeholder="geofilter-distance" />
-        <Form.Control placeholder="geofilter-polygon" />
-        <Form.Control placeholder="timezone" />
-        <Button type="submit">Submit</Button>
-      </Form>
+      <div className="openDataForm-choice">
+        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'query' })}>Search by query</Button>
+        <span>or</span>
+        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'multi' })}>Multi-criteria search</Button>
+      </div>
     );
   }
 }
