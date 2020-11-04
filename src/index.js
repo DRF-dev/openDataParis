@@ -16,6 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Store from './store';
 import Body from './components/body';
 import Formulaire from './components/form';
+import Details from './components/details';
 
 const Application = () => (
   <Container fluid id="container">
@@ -35,6 +36,7 @@ const App = () => (
     <Router>
       <Switch>
         <Route exact path="/" component={Application} />
+        <Route path="/:id" component={Details} />
         <Redirect to="/" />
       </Switch>
     </Router>

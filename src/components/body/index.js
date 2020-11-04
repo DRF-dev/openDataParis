@@ -9,6 +9,7 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 class Body extends Component {
   constructor(props) {
@@ -53,7 +54,9 @@ class Body extends Component {
                       <span>Données: </span>
                       {dataset.metas.records_count}
                     </Card.Text>
-                    <Button variant="outline-light">Description</Button>
+                    <Link to={`/${dataset.datasetid}`} className="text-decoration-none">
+                      <Button variant="outline-light">Détails</Button>
+                    </Link>
                   </Card.Body>
                 </Card>
               </Col>
