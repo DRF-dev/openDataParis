@@ -22,7 +22,6 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    console.log(data.datasets);
     return (
       <div className="body">
         <h1>{message}</h1>

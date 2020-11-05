@@ -20,7 +20,7 @@ class Formulaire extends React.Component {
     const { q, rows } = this.state;
     try {
       if (q === '') throw new Error('Empty query');
-      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${q}&rows=${rows || 10}`);
+      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${escape(q)}&rows=${rows || 10}`);
       this.setState({ message: `${data.nhits} Result(s)`, data });
     } catch (err) {
       this.setState({ message: err.message, data: [] });
@@ -55,7 +55,7 @@ class Formulaire extends React.Component {
       return (
         <Form className="openDataForm-choice" onSubmit={(e) => this.searchQuery(e)}>
           <Form.Control placeholder="query" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
-          <Form.Control placeholder="Max cards (default: 10)" onChange={(e) => this.setState({ rows: e.target.value })} value={rows} type="number" />
+          <Form.Control placeholder="Max cards (default: 10)" onChange={(e) => this.setState({ rows: Number(e.target.value) })} value={rows} type="number" />
           <Button variant="outline-dark" type="submit" className="submit">Submit</Button>
           <Button variant="outline-dark" onClick={() => this.setState({ nav: '' })}>Back</Button>
         </Form>

@@ -21,10 +21,10 @@ import Details from './components/details';
 const Application = () => (
   <Container fluid id="container">
     <Row>
-      <Col sm={3} className="formulaire">
+      <Col sm={3} md={2} className="formulaire">
         <Formulaire />
       </Col>
-      <Col sm={9}>
+      <Col sm={9} md={10}>
         <Body />
       </Col>
     </Row>
