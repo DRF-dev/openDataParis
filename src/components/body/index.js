@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
@@ -28,32 +26,32 @@ class Body extends Component {
         <Row>
           {!(data.datasets)
             ? null
-            : data.datasets.map((dataset) => (
+            : data.datasets.map(({ datasetid, metas }) => (
               <Col xs={4}>
                 <Card className="cards">
                   <Card.Body>
-                    <Card.Title>{dataset.metas.title}</Card.Title>
+                    <Card.Title>{metas.title}</Card.Title>
                     <Card.Text>
                       <span>Modifié: </span>
-                      {dataset.metas.metadata_processed}
+                      {metas.metadata_processed}
                     </Card.Text>
                     <Card.Text>
                       <span>Publisher: </span>
-                      {dataset.metas.publisher}
+                      {metas.publisher}
                     </Card.Text>
                     <Card.Text>
                       <span>Licence: </span>
-                      {dataset.metas.license}
+                      {metas.license}
                     </Card.Text>
                     <Card.Text>
                       <span>Keywords: </span>
-                      {dataset.metas.keyword.join(', ')}
+                      {metas.keyword.join(', ')}
                     </Card.Text>
                     <Card.Text>
                       <span>Données: </span>
-                      {dataset.metas.records_count}
+                      {metas.records_count}
                     </Card.Text>
-                    <Link to={`/${dataset.datasetid}`} className="text-decoration-none">
+                    <Link to={`/${datasetid}`} className="text-decoration-none">
                       <Button variant="outline-light">Détails</Button>
                     </Link>
                   </Card.Body>
@@ -66,9 +64,26 @@ class Body extends Component {
   }
 }
 
+Body.defaultProps = {
+  message: null,
+  data: null,
+};
+
 Body.propTypes = {
   message: propTypes.string,
-  data: propTypes.object,
+  data: propTypes.shape({
+    datasets: propTypes.arrayOf(propTypes.shape({
+      datasetid: propTypes.string,
+      metas: propTypes.shape({
+        title: propTypes.string,
+        metadata_processed: propTypes.string,
+        publisher: propTypes.string,
+        license: propTypes.string,
+        keyword: propTypes.arrayOf(propTypes.string),
+        records_count: propTypes.number,
+      }),
+    })),
+  }),
 };
 
 const mapStateToProps = (state) => ({

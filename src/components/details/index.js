@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import {
@@ -16,7 +14,7 @@ class Details extends Component {
     const { match } = this.props;
     this.state = {
       id: match.params.id,
-      description: '<div>a<div>',
+      description: '<div><div>',
     };
   }
 
@@ -30,12 +28,18 @@ class Details extends Component {
       const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/${id}`);
       this.setState({ description: data.metas.description });
     } catch (err) {
-      this.setState({ description: '<div>a<div>' });
+      this.setState({ description: '<div><div>' });
     }
+  }
+
+  async consoleLog() {
+    const { id } = this.state;
+    console.log((await Axios.get(`https://opendata.paris.fr/api/records/1.0/search/?dataset=${id}`)).data);
   }
 
   render() {
     const { id, description } = this.state;
+    this.consoleLog();
     return (
       <Container fluid id="container">
         <Navbar className="navbar" fluid>
@@ -52,8 +56,16 @@ class Details extends Component {
   }
 }
 
+Details.defaultProps = {
+  match: null,
+};
+
 Details.propTypes = {
-  match: propTypes.object,
+  match: propTypes.shape({
+    params: propTypes.shape({
+      id: propTypes.string,
+    }),
+  }),
 };
 
 export default Details;

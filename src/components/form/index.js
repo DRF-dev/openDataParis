@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Axios from 'axios';
+import propTypes from 'prop-types';
 
 class Formulaire extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class Formulaire extends React.Component {
   async searchQuery(e) {
     e.preventDefault();
     await this.getDatas();
-    // eslint-disable-next-line react/prop-types
     const { dispatch } = this.props;
     const {
       status,
@@ -88,5 +88,13 @@ class Formulaire extends React.Component {
     );
   }
 }
+
+Formulaire.defaultProps = {
+  dispatch: null,
+};
+
+Formulaire.propTypes = {
+  dispatch: propTypes.func,
+};
 
 export default connect(null)(Formulaire);
