@@ -5,7 +5,6 @@
     "start": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
     "fix": "webpack-dev-server --mode development --open --fix"
-
   },
   "license": "ISC",
   "devDependencies": {

@@ -18,7 +18,7 @@ import Body from './components/body';
 import Formulaire from './components/form';
 import Details from './components/details';
 
-const Application = () => (
+const Search = () => (
   <Container fluid id="container">
     <Row>
       <Col sm={3} md={2} className="formulaire">
@@ -35,7 +35,7 @@ const App = () => (
   <Provider store={Store}>
     <Router>
       <Switch>
-        <Route exact path="/" component={Application} />
+        <Route exact path="/" component={Search} />
         <Route path="/:id" component={Details} />
         <Redirect to="/" />
       </Switch>

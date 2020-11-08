@@ -9,7 +9,7 @@ class Formulaire extends React.Component {
     super(props);
     this.state = {
       q: '',
-      rows: NaN,
+      rows: null,
       nav: '',
       status: null,
       message: null,
@@ -22,7 +22,7 @@ class Formulaire extends React.Component {
     try {
       if (q === '') throw new Error('Empty query');
       const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${escape(q)}&rows=${rows || 10}`);
-      this.setState({ message: `${data.nhits} Result(s)`, data });
+      this.setState({ message: `${data.nhits} Resultat${data.nhits > 1 ? 's' : ''}`, data });
     } catch (err) {
       this.setState({ message: err.message, data: [] });
     }
@@ -81,9 +81,9 @@ class Formulaire extends React.Component {
     }
     return (
       <div className="openDataForm-choice">
-        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'query' })}>Search by query</Button>
-        <span>or</span>
-        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'multi' })}>Multi-criteria search</Button>
+        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'query' })}>Recherche par query</Button>
+        <span>ou</span>
+        <Button variant="outline-dark" onClick={() => this.setState({ nav: 'multi' })}>Recherche multi-critère</Button>
       </div>
     );
   }

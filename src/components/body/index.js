@@ -21,13 +21,12 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    return (
-      <div className="body">
-        <h1>{message}</h1>
-        <Row>
-          {!(data.datasets)
-            ? null
-            : data.datasets.map(({ datasetid, metas }) => (
+    if (data.datasets) {
+      return (
+        <div className="body">
+          <h1>{message}</h1>
+          <Row>
+            {data.datasets.map(({ datasetid, metas }) => (
               <Col xs={4}>
                 <Card className="cards">
                   <Card.Body>
@@ -44,7 +43,14 @@ class Body extends Component {
                 </Card>
               </Col>
             ))}
-        </Row>
+          </Row>
+        </div>
+      );
+    }
+    return (
+      <div className="body">
+        <h1>Bienvenue dans l&apos;annuaire des évènements de Paris !</h1>
+        <p>Choisissez une recherche par élément ou par critères.</p>
       </div>
     );
   }
