@@ -18,3 +18,5 @@ CardText.propTypes = {
   data: propTypes.string,
   dataName: propTypes.string,
 };
+
+export default CardText;

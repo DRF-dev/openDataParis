@@ -8,6 +8,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import CardText from '../cardText';
 
 class Body extends Component {
   constructor(props) {
@@ -31,26 +32,11 @@ class Body extends Component {
                 <Card className="cards">
                   <Card.Body>
                     <Card.Title>{metas.title}</Card.Title>
-                    <Card.Text>
-                      <span>Modifié: </span>
-                      {metas.metadata_processed}
-                    </Card.Text>
-                    <Card.Text>
-                      <span>Publisher: </span>
-                      {metas.publisher}
-                    </Card.Text>
-                    <Card.Text>
-                      <span>Licence: </span>
-                      {metas.license}
-                    </Card.Text>
-                    <Card.Text>
-                      <span>Keywords: </span>
-                      {metas.keyword.join(', ')}
-                    </Card.Text>
-                    <Card.Text>
-                      <span>Données: </span>
-                      {metas.records_count}
-                    </Card.Text>
+                    <CardText data={metas.metadata_processed} dataName="Modifié le" />
+                    <CardText data={metas.publisher} dataName="Publisher" />
+                    <CardText data={metas.license} dataName="Licence" />
+                    <CardText data={metas.keyword.join(', ')} dataName="Keywords" />
+                    <CardText data={metas.records_count} dataName="Données" />
                     <Link to={`/${datasetid}`} className="text-decoration-none">
                       <Button variant="outline-light">Détails</Button>
                     </Link>
