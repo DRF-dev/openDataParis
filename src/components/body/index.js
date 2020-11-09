@@ -35,6 +35,9 @@ class Body extends Component {
                     <CardText data={fields.category} dataName="Catégorie" />
                     <CardText data={fields.address_name} dataName="Établissement" />
                     <CardText data={`${fields.address_street} ${fields.address_zipcode}`} dataName="Adresse" />
+                    <CardText data={fields.blind === 1 ? 'Oui' : 'Non'} dataName="Adapté aux personnes aveugles" />
+                    <CardText data={fields.deaf === 1 ? 'Oui' : 'Non'} dataName="Adapté aux personnes malentendantes" />
+                    <CardText data={fields.pmr === 1 ? 'Oui' : 'Non'} dataName="Adapté aux personnes à mobilité réduite" />
                     <CardText data={fields.contact_phone} dataName="Téléphone" />
                     <Link to={`/${recordid}`} className="text-decoration-none">
                       <Button variant="outline-light">Plus d&apos;information</Button>
