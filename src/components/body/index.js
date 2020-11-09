@@ -8,7 +8,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import CardText from '../cardText';
+import { CardText } from '../textInLine';
 
 class Body extends Component {
   constructor(props) {
@@ -21,23 +21,23 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    if (data.datasets) {
+    console.log(data);
+    if (data.records) {
       return (
         <div className="body">
           <h1>{message}</h1>
           <Row>
-            {data.datasets.map(({ datasetid, metas }) => (
+            {data.records.map(({ fields, recordid }) => (
               <Col xs={4}>
                 <Card className="cards">
                   <Card.Body>
-                    <Card.Title>{metas.title}</Card.Title>
-                    <CardText data={metas.metadata_processed} dataName="Modifié le" />
-                    <CardText data={metas.publisher} dataName="Publisher" />
-                    <CardText data={metas.license} dataName="Licence" />
-                    <CardText data={metas.keyword.join(', ')} dataName="Keywords" />
-                    <CardText data={metas.records_count} dataName="Données" />
-                    <Link to={`/${datasetid}`} className="text-decoration-none">
-                      <Button variant="outline-light">Détails</Button>
+                    <Card.Title>{fields.title}</Card.Title>
+                    <CardText data={fields.category} dataName="Catégorie" />
+                    <CardText data={fields.address_name} dataName="Établissement" />
+                    <CardText data={`${fields.address_street} ${fields.address_zipcode}`} dataName="Adresse" />
+                    <CardText data={fields.contact_phone} dataName="Téléphone" />
+                    <Link to={`/${recordid}`} className="text-decoration-none">
+                      <Button variant="outline-light">Plus d&apos;information</Button>
                     </Link>
                   </Card.Body>
                 </Card>
@@ -64,15 +64,22 @@ Body.defaultProps = {
 Body.propTypes = {
   message: propTypes.string,
   data: propTypes.shape({
-    datasets: propTypes.arrayOf(propTypes.shape({
+    records: propTypes.arrayOf(propTypes.shape({
       datasetid: propTypes.string,
-      metas: propTypes.shape({
+      recordid: propTypes.string,
+      fields: propTypes.shape({
+        category: propTypes.string,
         title: propTypes.string,
-        metadata_processed: propTypes.string,
-        publisher: propTypes.string,
-        license: propTypes.string,
-        keyword: propTypes.arrayOf(propTypes.string),
-        records_count: propTypes.number,
+        access_type: propTypes.string,
+        address_name: propTypes.string,
+        address_street: propTypes.string,
+        address_zipcode: propTypes.string,
+        contact_mail: propTypes.string,
+        contact_phone: propTypes.string,
+        price_type: propTypes.string,
+      }),
+      geometry: propTypes.shape({
+        coordinates: propTypes.arrayOf(propTypes.number),
       }),
     })),
   }),

@@ -1,5 +1,4 @@
 const initState = {
-  status: null,
   message: 'Search a service',
   data: {},
 };

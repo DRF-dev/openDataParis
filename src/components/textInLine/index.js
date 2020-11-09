@@ -9,6 +9,13 @@ const CardText = ({ data, dataName }) => (
   </Card.Text>
 );
 
+const InformationsLine = ({ data, dataName }) => (
+  <li>
+    <span>{`${dataName}: `}</span>
+    {data}
+  </li>
+);
+
 CardText.defaultProps = {
   data: null,
   dataName: null,
@@ -19,4 +26,14 @@ CardText.propTypes = {
   dataName: propTypes.string,
 };
 
-export default CardText;
+InformationsLine.defaultProps = {
+  data: null,
+  dataName: null,
+};
+
+InformationsLine.propTypes = {
+  data: propTypes.string,
+  dataName: propTypes.string,
+};
+
+export { CardText, InformationsLine };

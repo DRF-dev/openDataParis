@@ -4,9 +4,11 @@ import {
   Container,
   Navbar,
   Nav,
-  Row,
+  Image,
 } from 'react-bootstrap';
 import Axios from 'axios';
+import { Notyf } from 'notyf';
+import { InformationsLine } from '../textInLine';
 
 class Details extends Component {
   constructor(props) {
@@ -14,45 +16,72 @@ class Details extends Component {
     const { match } = this.props;
     this.state = {
       id: match.params.id,
-      description: '<div><div>',
+      data: null,
     };
   }
 
   componentDidMount() {
-    this.getDetails();
+    this.getDescription();
   }
 
-  async getDetails() {
+  async getDescription() {
     const { id } = this.state;
     try {
-      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/${id}`);
-      this.setState({ description: data.metas.description });
+      const { data } = await Axios.get(`https://opendata.paris.fr/api/v2/catalog/datasets/que-faire-a-paris-/records/${id}`);
+      console.log(data);
+      this.setState({
+        data: data.record.fields,
+      });
     } catch (err) {
-      this.setState({ description: '<div><div>' });
+      new Notyf().error('Id non-conforme');
     }
   }
 
-  async consoleLog() {
-    const { id } = this.state;
-    console.log((await Axios.get(`https://opendata.paris.fr/api/records/1.0/search/?dataset=${id}`)).data);
-  }
-
   render() {
-    const { id, description } = this.state;
-    this.consoleLog();
-    return (
-      <Container fluid id="container">
-        <Navbar className="navbar" fluid>
-          <Navbar.Brand>{`Détails of ${id}`}</Navbar.Brand>
-          <Nav>
-            <Nav.Link href="/">Retour vers recherche</Nav.Link>
-          </Nav>
-        </Navbar>
-        <Row style={{ padding: '2%' }}>
-          <div dangerouslySetInnerHTML={{ __html: description }} />
-        </Row>
-      </Container>
-    );
+    const { data } = this.state;
+    if (data) {
+      return (
+        <Container fluid id="container">
+          <Navbar className="navbar" fluid>
+            <Navbar.Brand>{data.title}</Navbar.Brand>
+            <Nav>
+              <Nav.Link href="/">Retour vers recherche</Nav.Link>
+            </Nav>
+          </Navbar>
+          <div style={{ padding: '2%' }}>
+            <Image src={data.cover_url} alt={data.cover_alt} className="image" />
+            <p>{data.lead_text}</p>
+            <h2>Description</h2>
+            <p dangerouslySetInnerHTML={{ __html: data.description }} />
+            <h2>Informations</h2>
+            <ul>
+              <InformationsLine dataName="Catégorie" data={data.category} />
+              <InformationsLine dataName="Nom de l'établissement" data={data.address_name} />
+              <InformationsLine dataName="Type d'entrée" data={data.price_type} />
+              <InformationsLine dataName="Adresse" data={`${data.address_street} ${data.address_zipcode} ${data.address_city}`} />
+              <InformationsLine dataName="Programe" data={data.programs === null ? 'Aucune information' : data.programs} />
+              <InformationsLine dataName="Adapté aux personnes à mobilité réduite" data={data.pmr === 1 ? 'Oui' : 'Non'} />
+              <InformationsLine dataName="Adapté aux personnes sourdes" data={data.deaf === 1 ? 'Oui' : 'Non'} />
+              <InformationsLine dataName="Adapté aux personnes aveugles" data={data.blind === 1 ? 'Oui' : 'Non'} />
+              <InformationsLine dataName="Mots clés" data={data.tags.join(', ')} />
+            </ul>
+            <h2>Dates</h2>
+            <p dangerouslySetInnerHTML={{ __html: data.date_description }} />
+            <h2>Détail des prix</h2>
+            <p dangerouslySetInnerHTML={{ __html: data.price_detail }} />
+            <h2>Contacts</h2>
+            <ul>
+              <InformationsLine dataName="Facebook" data={data.contact_facebook === null ? 'aucune information' : data.contact_facebook} />
+              <InformationsLine dataName="Twitter" data={data.contact_twitter === null ? 'aucune information' : data.contact_twitter} />
+              <InformationsLine dataName="Mail" data={data.contact_mail === null ? 'aucune information' : data.contact_mail} />
+              <InformationsLine dataName="Phone" data={data.contact_phone === null ? 'aucune information' : data.contact_phone} />
+              <InformationsLine dataName="Site web" data={data.contact_url === null ? 'aucune information' : data.contact_url} />
+            </ul>
+          </div>
+        </Container>
+      );
+    }
+    return <Container id="container">Loading...</Container>;
   }
 }
 

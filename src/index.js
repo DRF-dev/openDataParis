@@ -12,6 +12,7 @@ import {
 import 'babel-polyfill';
 import './index.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'notyf/notyf.min.css';
 
 import Store from './store';
 import Body from './components/body';

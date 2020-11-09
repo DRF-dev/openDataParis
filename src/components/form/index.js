@@ -3,29 +3,59 @@ import { Form, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import propTypes from 'prop-types';
+import { Notyf } from 'notyf';
 
 class Formulaire extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      q: '',
-      rows: null,
       nav: '',
-      status: null,
-      message: null,
-      data: null,
+      rows: undefined,
+      // Search by query
+      q: '',
+      // Search multi-criteria
+      /*
+        sort: champ ou -champ
+        Facet: [
+          category,
+          tags,
+          address_name,
+          address_zipcode,
+          address_city,
+          pmr,
+          blind,
+          deaf,
+          access_type,
+          price_type
+        ]
+      */
+      // Response
+      message: undefined,
+      data: undefined,
     };
   }
 
   async getDatas() {
-    const { q, rows } = this.state;
-    try {
-      if (q === '') throw new Error('Empty query');
-      const { data } = await Axios.get(`https://opendata.paris.fr/api/datasets/1.0/search/?q=${escape(q)}&rows=${rows || 10}`);
-      this.setState({ message: `${data.nhits} Resultat${data.nhits > 1 ? 's' : ''}`, data });
-    } catch (err) {
-      this.setState({ message: err.message, data: [] });
-    }
+    const {
+      nav,
+      q,
+      rows,
+    } = this.state;
+    if (nav === 'query') {
+      try {
+        if (q === '') throw new Error('Empty query');
+        const { data } = await Axios.get(`https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&facet=category&facet=tags&facet=address_name&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type&q=${q}&rows=${rows || 30}`);
+        this.setState({ message: `${data.nhits} Resultat${data.nhits > 1 ? 's' : ''}`, data });
+        new Notyf().success('Requete effectué avec succès');
+      } catch (err) {
+        this.setState({ message: err.message, data: [] });
+        new Notyf().success('Echec de la requete');
+      }
+    }/*
+    if (nav === 'multi') {
+      // TODO: Search multi-criteria
+      const { data } = await Axios.get('https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&facet=category&facet=tags&facet=address_name&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type');
+    } */
   }
 
   async searchQuery(e) {
@@ -33,19 +63,17 @@ class Formulaire extends React.Component {
     await this.getDatas();
     const { dispatch } = this.props;
     const {
-      status,
       message,
       data,
     } = this.state;
     const action = {
       type: 'data',
       data: {
-        status,
         message,
         data,
       },
     };
-    this.setState({ q: '', rows: NaN });
+    this.setState({ q: '', rows: undefined });
     dispatch(action);
   }
 
@@ -55,7 +83,7 @@ class Formulaire extends React.Component {
       return (
         <Form className="openDataForm-choice" onSubmit={(e) => this.searchQuery(e)}>
           <Form.Control placeholder="query" onChange={(e) => this.setState({ q: e.target.value })} value={q} />
-          <Form.Control placeholder="Max cards (default: 10)" onChange={(e) => this.setState({ rows: Number(e.target.value) })} value={rows} type="number" />
+          <Form.Control placeholder="Max cards (default: 30)" onChange={(e) => this.setState({ rows: Number(e.target.value) })} value={rows} type="number" />
           <Button variant="outline-dark" type="submit" className="submit">Submit</Button>
           <Button variant="outline-dark" onClick={() => this.setState({ nav: '' })}>Back</Button>
         </Form>

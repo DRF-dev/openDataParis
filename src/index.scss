@@ -1,4 +1,6 @@
+@import './reset.scss';
 $appBackground: #303030;
+$titleColor: #37A59A;
 
 @mixin inColumn() {
   height: 100%;
@@ -10,6 +12,15 @@ $appBackground: #303030;
   min-height: 100vh;
   background-color: $appBackground;
   color: white;
+
+  .image {
+    max-width: 100%;
+  }
+
+  h1,
+  h2 {
+    color: $titleColor;
+  }
 
   .formulaire {
     height: 100vh;
@@ -51,14 +62,14 @@ $appBackground: #303030;
       border-radius: 1rem;
       background-color: #454545;
       margin-bottom: 6%;
-
-      span {
-        font-weight: bold;
-      }
     }
   }
 
   .navbar {
     background-color: aliceblue;
+  }
+
+  span {
+    font-weight: bold;
   }
 }
