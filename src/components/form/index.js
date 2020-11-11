@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import Axios from 'axios';
 import propTypes from 'prop-types';
 import { Notyf } from 'notyf';
@@ -82,21 +81,34 @@ class Formulaire extends React.Component {
 
   async searchQuery(e) {
     e.preventDefault();
+    const { datas } = this.props;
     await this.getDatas();
-    const { dispatch } = this.props;
     const {
       message,
       data,
     } = this.state;
-    const action = {
-      type: 'data',
-      data: {
-        message,
-        data,
+    this.setState({
+      nav: '',
+      rows: undefined,
+      q: '',
+      lang: '',
+      tri: {
+        by: null,
+        selectedOption: 'croissant',
       },
-    };
-    this.setState({ q: '', rows: undefined });
-    dispatch(action);
+      include: {
+        facet: '',
+        value: null,
+      },
+      exclude: {
+        facet: '',
+        value: null,
+      },
+      geofilterDistance: null,
+      geofilterPolygon: null,
+      timeZone: '',
+    });
+    datas(message, data);
   }
 
   render() {
@@ -241,11 +253,11 @@ class Formulaire extends React.Component {
 }
 
 Formulaire.defaultProps = {
-  dispatch: null,
+  datas: () => {},
 };
 
 Formulaire.propTypes = {
-  dispatch: propTypes.func,
+  datas: propTypes.func,
 };
 
-export default connect(null)(Formulaire);
+export default Formulaire;

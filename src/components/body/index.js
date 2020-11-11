@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import {
   Button,
@@ -21,7 +20,7 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    if (data.records) {
+    if (data) {
       return (
         <div className="body">
           <h1>{message}</h1>
@@ -87,10 +86,4 @@ Body.propTypes = {
   }),
 };
 
-const mapStateToProps = (state) => ({
-  status: state.status,
-  message: state.message,
-  data: state.data,
-});
-
-export default connect(mapStateToProps)(Body);
+export default Body;
