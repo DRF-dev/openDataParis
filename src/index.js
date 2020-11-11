@@ -32,8 +32,6 @@ const Search = () => (
   </Container>
 );
 
-// TODO: Link with google map
-// TODO: README.md
 const App = () => (
   <Provider store={Store}>
     <Router>
