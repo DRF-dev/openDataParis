@@ -9,7 +9,6 @@ $titleColor: #37A59A;
 }
 
 #container {
-  min-height: 100vh;
   background-color: $appBackground;
   color: white;
 
@@ -18,20 +17,16 @@ $titleColor: #37A59A;
   }
 
   h1,
-  h2 {
+  h2,
+  .card-title {
     color: $titleColor;
   }
 
   .formulaire {
-    height: 100vh;
+    min-height: 100vh;
     background-color: aliceblue;
 
     .openDataForm {
-      @include inColumn();
-      justify-content: space-around;
-    }
-
-    .openDataForm-choice {
       @include inColumn();
       justify-content: center;
       align-items: center;
@@ -48,6 +43,12 @@ $titleColor: #37A59A;
       span {
         color: $appBackground;
       }
+    }
+
+    .openDataForm-choice {
+      @include inColumn();
+      justify-content: space-around;
+      color: $appBackground;
     }
   }
 
@@ -74,7 +75,8 @@ $titleColor: #37A59A;
     background-color: aliceblue;
   }
 
-  span {
+  span,
+  .card-title {
     font-weight: bold;
   }
 }

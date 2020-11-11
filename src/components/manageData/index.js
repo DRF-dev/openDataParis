@@ -12,7 +12,7 @@ const CardText = ({ data, dataName }) => (
 const InformationsLine = ({ data, dataName }) => (
   <li>
     <span>{`${dataName}: `}</span>
-    {data}
+    {data === null ? 'Aucune information' : data}
   </li>
 );
 

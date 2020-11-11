@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import Axios from 'axios';
 import { Notyf } from 'notyf';
-import { InformationsLine } from '../textInLine';
+import { InformationsLine } from '../manageData';
 
 class Details extends Component {
   constructor(props) {
@@ -28,7 +28,6 @@ class Details extends Component {
     const { id } = this.state;
     try {
       const { data } = await Axios.get(`https://opendata.paris.fr/api/v2/catalog/datasets/que-faire-a-paris-/records/${id}`);
-      console.log(data);
       this.setState({
         data: data.record.fields,
       });
@@ -58,8 +57,8 @@ class Details extends Component {
               <InformationsLine dataName="Catégorie" data={data.category} />
               <InformationsLine dataName="Nom de l'établissement" data={data.address_name} />
               <InformationsLine dataName="Type d'entrée" data={data.price_type} />
-              <InformationsLine dataName="Adresse" data={`${data.address_street} ${data.address_zipcode} ${data.address_city}`} />
-              <InformationsLine dataName="Programe" data={data.programs === null ? 'Aucune information' : data.programs} />
+              <InformationsLine dataName="Adresse" data={`${data.address_street === null ? '' : data.address_street} ${data.address_zipcode === null ? '' : data.address_zipcode} ${data.address_city === null ? '' : data.address_city}`} />
+              <InformationsLine dataName="Programe" data={data.programs} />
               <InformationsLine dataName="Adapté aux personnes à mobilité réduite" data={data.pmr === 1 ? 'Oui' : 'Non'} />
               <InformationsLine dataName="Adapté aux personnes sourdes" data={data.deaf === 1 ? 'Oui' : 'Non'} />
               <InformationsLine dataName="Adapté aux personnes aveugles" data={data.blind === 1 ? 'Oui' : 'Non'} />
@@ -71,11 +70,11 @@ class Details extends Component {
             <p dangerouslySetInnerHTML={{ __html: data.price_detail }} />
             <h2>Contacts</h2>
             <ul>
-              <InformationsLine dataName="Facebook" data={data.contact_facebook === null ? 'aucune information' : data.contact_facebook} />
-              <InformationsLine dataName="Twitter" data={data.contact_twitter === null ? 'aucune information' : data.contact_twitter} />
-              <InformationsLine dataName="Mail" data={data.contact_mail === null ? 'aucune information' : data.contact_mail} />
-              <InformationsLine dataName="Phone" data={data.contact_phone === null ? 'aucune information' : data.contact_phone} />
-              <InformationsLine dataName="Site web" data={data.contact_url === null ? 'aucune information' : data.contact_url} />
+              <InformationsLine dataName="Facebook" data={data.contact_facebook} />
+              <InformationsLine dataName="Twitter" data={data.contact_twitter} />
+              <InformationsLine dataName="Mail" data={data.contact_mail} />
+              <InformationsLine dataName="Phone" data={data.contact_phone} />
+              <InformationsLine dataName="Site web" data={data.contact_url} />
             </ul>
           </div>
         </Container>

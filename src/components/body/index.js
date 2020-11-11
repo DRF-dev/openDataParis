@@ -8,7 +8,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { CardText } from '../textInLine';
+import { CardText } from '../manageData';
 
 class Body extends Component {
   constructor(props) {
@@ -21,7 +21,6 @@ class Body extends Component {
       message,
       data,
     } = this.props;
-    console.log(data);
     if (data.records) {
       return (
         <div className="body">
@@ -31,7 +30,7 @@ class Body extends Component {
               <Col xs={4}>
                 <Card className="cards">
                   <Card.Body>
-                    <Card.Title>{fields.title}</Card.Title>
+                    <Card.Title className="card-title">{fields.title}</Card.Title>
                     <CardText data={fields.category} dataName="Catégorie" />
                     <CardText data={fields.address_name} dataName="Établissement" />
                     <CardText data={`${fields.address_street} ${fields.address_zipcode}`} dataName="Adresse" />
