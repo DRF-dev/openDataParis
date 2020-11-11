@@ -8,7 +8,10 @@ import {
 } from 'react-bootstrap';
 import Axios from 'axios';
 import { Notyf } from 'notyf';
+import GoogleMap from 'google-map-react';
 import { InformationsLine } from '../manageData';
+
+const Marker = () => <div dangerouslySetInnerHTML={{ __html: '<svg class="icon line" width="48" height="48" id="lightning" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polygon points="7 12 12 14 11 21 17 12 13 10 14 3 7 12" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"></polygon></svg>' }} />;
 
 class Details extends Component {
   constructor(props) {
@@ -32,7 +35,7 @@ class Details extends Component {
         data: data.record.fields,
       });
     } catch (err) {
-      new Notyf().error('Id non-conforme');
+      new Notyf().error(err.message);
     }
   }
 
@@ -76,11 +79,24 @@ class Details extends Component {
               <InformationsLine dataName="Phone" data={data.contact_phone} />
               <InformationsLine dataName="Site web" data={data.contact_url} />
             </ul>
+            <div className="map">
+              <h2>Map</h2>
+              <GoogleMap
+                bootstrapURLKeys="AIzaSyD4Ta5T7yWIe9eBSfZBvwRc3UWWcoe85js"
+                defaultCenter={{ lat: data.lat_lon.lat, lng: data.lat_lon.lon }}
+                defaultZoom={11}
+              >
+                <Marker
+                  lat={data.lat_lon.lat}
+                  lng={data.lat_lon.lon}
+                />
+              </GoogleMap>
+            </div>
           </div>
         </Container>
       );
     }
-    return <Container id="container">Loading...</Container>;
+    return <Container id="container" fluid>Loading...</Container>;
   }
 }
 
