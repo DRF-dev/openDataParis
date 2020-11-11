@@ -31,11 +31,7 @@ npm start
 │   ├── index.html
 │   ├── index.js
 │   ├── index.scss
-│   ├── reset.scss
-│   └── store
-│       ├── index.js
-│       └── reducer
-│           └── index.js
+│   └── reset.scss
 └── webpack.config.js
 ```
 
